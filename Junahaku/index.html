@@ -6,15 +6,17 @@
     <title></title>
 
     <script src="Scripts/jquery-3.3.1.js"></script>
-    <script src="Scripts/popper.js"></script>
-
+    <script src="Scripts/umd/popper.js"></script>
     <script type="text/javascript" src="Scripts/bootstrap.js"></script>
-
+    <link href="tyylit.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito%7CPacifico" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 </head>
-<body>
-    <div class="container">
-        <form>
+<body><br/>
+    <div style="border-width: thick !important;"
+    <div class="container border border-white col-7 rounded" style="border-width: thick;"><br/>
+        <h1><font face="Pacifico" color="white" style=" font-size: 5rem">Logo</font></h1><br />
+        <form><font face="Nunito"</font>
             <div class="form-group">
                 <label for="lähtöAsema">Lähtöasema</label>
                 <input type="text" class="form-control form-control-lg" id="lähtöAsema" placeholder="Syötä lähtöasema" style="width: 50%;">
@@ -23,25 +25,24 @@
                 <label for="saapumisAsema">Saapumisasema</label>
                 <input type="text" class="form-control form-control-lg" id="lähtöAsema" placeholder="Syötä saapumisasema" style="width: 50%;">
             </div>
-            <div class="form-group">
-                <label for="päiväMäärä">Päivämäärä</label>
-                <input type="datetime-local" class="form-control form-control-lg" id="päivämäärä" placeholder="today" style="width: 50%;">
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button"
-                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown button
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+            <div class="form-group row">
+                <div class="col-sm-2">Päivämäärä</div>
+                <div class="radio col-sm-2">
+                    <label><input type="radio" name="optradio">Lähtöaika</label>
+                </div>
+                <div class="radio col-sm-2">
+                    <label><input type="radio" name="optradio">Saapumisaika</label>
                 </div>
             </div>
+                <div class="row col-sm-2">
+                    <input type="datetime-local" class="form-control form-control-lg" id="päivämäärä" placeholder="today" style="width: 190%;">
+                </div>
+
             <br />
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-outline-light btn-lg">Hae junia</button> <br/> <br/>
         </form>
+    </div>
     </div>
 
 

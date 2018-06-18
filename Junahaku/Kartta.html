@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Kartta</title>
+    <style>
+        #kartta {
+            height: 400px;
+            width: 500px;
+        }
+
+        #kartta2 {
+            height: 400px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lähtöpaikka</h1>
+    <div id="kartta"></div> <br />
+
+    <h1>Saapumispaikka</h1>
+    <div id="kartta2"></div>
+
+    <script>
+        // Kordinaatit muuttujissa
+        var la_alku = 60.194711;
+        var lo_alku = 25.030713;
+        var la_loppu = 62.24;
+        var lo_loppu = 25.75;
+        var la_hakuSijainti;
+        var lo_hakuSijainti;
+
+        // Luodaan kaksi Mappia
+        function initMap() {
+            var map1 = new google.maps.Map(document.getElementById('kartta'), {
+                center: { lat: la_hakuSijainti, lng: lo_hakuSijainti },
+                zoom: 14
+            });
+            var merkki1 = new google.maps.Marker({
+                position: { lat: la_hakuSijainti, lng: lo_hakuSijainti },
+                map: map1
+            });
+
+            var map2 = new google.maps.Map(document.getElementById('kartta2'), {
+                center: { lat: la_loppu, lng: lo_loppu },
+                zoom: 14
+            });
+            var merkki2 = new google.maps.Marker({
+                position: { lat: la_loppu, lng: lo_loppu },
+                map: map2
+            });
+        }
+
+        //Sijaintipalvelu - haku
+        navigator.geolocation.getCurrentPosition(success, error, {
+            enableHighAccuracy: true
+        });
+
+        //Haetun sijainnin kordinaatit
+        function success(data) {
+            console.dir(data)
+            la_hakuSijainti = data.coords.latitude
+            lo_hakuSijainti = data.coords.longitude
+            //Jos halutaan että kartta latautuu vasta kun käyttäjä on hyväksynyt sijaintipalvelut. Näin toimii, mutta jos ei anna lupaa niin kartta ei lataudu.
+            initMap();
+        }
+
+        //Jos sijainti epäonnistuu
+        function error(e) {
+            console.dir(e)
+            alert('Sijainnin haku epäonnistui, päivitä sivu ja yritä uudelleen');
+        }
+
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCePNpIIbvnybJtiYOe6h0v8oMv4gY4SaU">
+    </script>
+</body>
+</html>

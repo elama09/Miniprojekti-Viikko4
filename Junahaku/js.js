@@ -7,6 +7,7 @@ var lähtöAsemaLyhenne;
 var saapumisAsema;
 var saapumisAsemaLyhenne;
 var asematArray;
+var päivämäärä = document.getElementById("päivämäärä").value;
 
 $(document).ready(function () {
 
@@ -16,7 +17,12 @@ $(document).ready(function () {
         //data: "name=John&location=Boston",
         dataType: "json",
         success: function (data) {
-            kaikkiAsemat = data;
+            var dataSuodatettuHenkilöliikenne = data.filter(function (item) {
+                return item.passengerTraffic === true;
+            });
+
+
+            kaikkiAsemat = dataSuodatettuHenkilöliikenne;
             console.dir(kaikkiAsemat)
 
             HaeKaikkiOlemassaOlevatAsemat();
@@ -55,6 +61,23 @@ $(document).ready(function () {
         });
     }
 
+    //funktio - haetaan saapumis-/lähtöaika
+    function haeAika() {
+        $.each(kaikkiAsemat, function (indexInArray, valueOfElement) {
+            if (document.getElementById("lähtöAika").checked = true) {
+
+                if (this.stationName == lähtöAsema) {
+                    console.log(document.getElementById("päivämäärä").value)
+                    console.log(päivämäärä)
+
+                    if (this.startDate >= päivämäärä) {
+                        console.log("pvm2")
+                    }
+                }
+            }
+        });
+    }
+
     //löytää oikeat asemat
     $('#haeNappi').click(function () {
         //lähtöAsema = $('kenttä1').html().val;
@@ -62,12 +85,14 @@ $(document).ready(function () {
         etsiAsemaLähtö();
         saapumisAsema = document.getElementById('saapumisAsema').value;
         etsiAsemaSaapumis();
-
+        haeAika();
         console.log(lähtöAsemaLyhenne);
         console.log(saapumisAsemaLyhenne);
-
-        oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne;
-
+        var pvm = new Date(document.getElementById("päivämäärä").value);
+        pvm.setHours(pvm.getHours());
+        var isoPvm = pvm.toISOString();
+        oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=5";
+        console.log(oikeaURL.value);
         haeData();
     });
 
@@ -77,20 +102,48 @@ $(document).ready(function () {
     function TulostaTiedot() {
         for (var i = 0; i < tiedot.length; i++) {
             var juna = tiedot[i].trainType + tiedot[i].trainNumber;
-            var lähtö = new Date(tiedot[i].timeTableRows[0].scheduledTime);
-            var perillä = new Date(tiedot[i].timeTableRows[oikeaIndeksi()].scheduledTime);
-
-            function oikeaIndeksi() {
+            var lähtö = new Date(tiedot[i].timeTableRows[lähtöIndeksi()].scheduledTime);
+            var perillä = new Date(tiedot[i].timeTableRows[saapumisIndeksi()].scheduledTime);
+            function lähtöIndeksi() {
+                for (var b = 0; b < tiedot[i].timeTableRows.length; b++) {
+                    if ((tiedot[i].timeTableRows[b].stationShortCode) == lähtöAsemaLyhenne && (tiedot[i].timeTableRows[b].trainStopping == true)) {
+                        return b;
+                    }
+                }
+            }
+            function saapumisIndeksi() {
                 for (var a = 0; a < tiedot[i].timeTableRows.length; a++) {
                     if ((tiedot[i].timeTableRows[a].stationShortCode) == saapumisAsemaLyhenne && (tiedot[i].timeTableRows[a].trainStopping == true)) {
                         return a;
                     }
                 }
             }
-            console.log(juna + ", Lähtee: " + lähtö.toLocaleTimeString("fi", optiot) + ", Perillä: " + perillä.toLocaleTimeString("fi", optiot));
+            var decimalTimeString = (perillä.toLocaleTimeString("fi", optiot) - lähtö.toLocaleTimeString("fi", optiot));
+            var decimalTime = parseFloat(decimalTimeString);
+            decimalTime = decimalTime * 60 * 60;
+            var hours = Math.floor((decimalTime / (60 * 60)));
+            decimalTime = decimalTime - (hours * 60 * 60);
+            var minutes = Math.floor((decimalTime / 60));
+            decimalTime = decimalTime - (minutes * 60);
+            var seconds = Math.round(decimalTime);
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+            var kesto = ("" + hours + ":" + minutes + ":" + seconds)
+            console.log(juna + ", Lähtee: " + lähtö.toLocaleTimeString("fi", optiot)
+                + ", Perillä: " + perillä.toLocaleTimeString("fi", optiot) +
+                ", Kesto: " + kesto);
+            document.getElementById("lista").innerHTML += '<li><b>Lähijuna '
+                + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
+                + ' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
+                + ' ' + saapumisAsema +' <br /> Kesto: ' + kesto + ' <br /></li > ';
             //document.write(juna + ", Lähtee: " + lähtö.toLocaleTimeString("fi", optiot) + ", Perillä: " + perillä.toLocaleTimeString("fi", optiot))
         }
     }
+
 
     function HaeKaikkiOlemassaOlevatAsemat() {
 

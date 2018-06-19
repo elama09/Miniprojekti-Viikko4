@@ -25,10 +25,5 @@ input[type-radio] {
     border-width: thick;
 }
 
-{
-    padding-right: 0;
-    padding-left: 0;
-}
 
-}
-$enable-gradients: true;
+

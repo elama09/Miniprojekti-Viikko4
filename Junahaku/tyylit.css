@@ -25,5 +25,15 @@ input[type-radio] {
     border-width: thick;
 }
 
+#alkuSivu {
+    padding:0px;
+    transform: scale(1);
+    float:left;
+
+    //margin: 0px;
+    //height: auto;
+    //width: 40%;
+}
+
 
 

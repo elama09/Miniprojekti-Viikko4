@@ -15,31 +15,31 @@
     <br />
     <div class="">
         <div class="row">
-            <div class="col">
-                <div class="container border border-white rounded" style="border-width: thick;">
+            <div id="divContainerPoisto" class="container">
+                <div id="aloitusHaku" class="container">
                     <br />
-                    <h1><font face="Pacifico" color="white" style=" font-size: 5rem">Logo</font></h1><br />
+                    <h1 id="logo"><font face="Pacifico" color="white" style=" font-size: 5rem">NaviGO</font></h1><br />
                     <form>
                         <font face="Nunito"></font>
                         <div class="form-group">
                             <label for="lähtöAsema">Lähtöasema</label>
-                            <input type="text" class="form-control form-control-lg" id="lähtöAsema" placeholder="Syötä lähtöasema" style="width: 50%;">
+                            <input type="text" class="form-control form-control-lg" id="lähtöAsema" placeholder="Syötä lähtöasema" style="width: 80%;">
                         </div>
                         <div class="form-group">
                             <label for="saapumisAsema">Saapumisasema</label>
-                            <input type="text" class="form-control form-control-lg" id="saapumisAsema" placeholder="Syötä saapumisasema" style="width: 50%;">
+                            <input type="text" class="form-control form-control-lg" id="saapumisAsema" placeholder="Syötä saapumisasema" style="width: 80%;">
                         </div>
                         <div class="form-group row">
-                            <div class="col-sm-2">Päivämäärä</div>
-                            <div class="radio col-sm-2">
+                            <div class="col-4">Päivämäärä</div>
+                            <div class="radio col-3">
                                 <label><input type="radio" name="optradio">Lähtöaika</label>
                             </div>
-                            <div class="radio col-sm-2">
+                            <div class="radio col-3">
                                 <label><input type="radio" name="optradio">Saapumisaika</label>
                             </div>
                         </div>
                         <div class="row col-sm-2">
-                            <input type="datetime-local" class="form-control form-control-lg" id="päivämäärä" placeholder="today" style="width: 600%;">
+                            <input type="datetime-local" class="form-control form-control-lg" id="päivämäärä" placeholder="today" style="width: 1000%;">
                         </div>
 
                         <br />
@@ -48,12 +48,14 @@
                     </form>
                 </div>
             </div>
-            <div id="toinenKolumni" class="col">
-                2 of 3
-                
+            <div id="tyhjäKolumni" class="">
             </div>
-            <div id="kolmasKolumni" class="col">
-                3 of 3
+            <div id="toinenKolumni" class="">
+          
+
+            </div>
+            <div id="kolmasKolumni" class="">
+                
             </div>
         </div>
     </div>
@@ -62,12 +64,17 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 
     <script>
-
-
         $('#haeNappi').click(function () {
             $('#toinenKolumni').addClass('col')
             $('#kolmasKolumni').addClass('col')
+            $('#tyhjäKolumni').addClass('col-1')
+            $('#divContainerPoisto').removeClass('container')
+
+            $('#kolmasKolumni').load("Kartta.html")
+            $('#toinenKolumni').load("Junatulokset.html") 
         })
+
+
     </script>
 </body>
 </html>

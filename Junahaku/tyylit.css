@@ -1,5 +1,6 @@
 ﻿body {
     background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+    counter-reset: item;
 }
 
 h1 {
@@ -26,14 +27,89 @@ input[type-radio] {
 }
 
 #alkuSivu {
-    padding:0px;
+    padding: 0px;
     transform: scale(1);
-    float:left;
+    float: left;
 
-    //margin: 0px;
-    //height: auto;
-    //width: 40%;
+}
+
+#kartta {
+    height: 300px;
+    width: 310px;
+    border-radius: 50%;
+    margin: auto;
+    border: 7px white solid;
+}
+
+#kartta2 {
+    height: 300px;
+    width: 310px;
+    border-radius: 50%;
+    margin: auto;
+    border: 7px white solid;
+}
+
+.kartanOtsikko {
+    font-family: 'Nunito', sans-serif;
+    color: white;
+    font-weight: 800;
+    text-align: center;
 }
 
 
+#aloitusHaku {
+    margin-left: 60px;
+    padding-left: 40px;
+    border: solid white 5px;
+    border-radius: 25px;
+}
 
+#logo {
+    margin-left: 20px;
+    position: center;
+    padding-left: 25px;
+}
+
+#haeNappi {
+    margin-left: 90px;
+    position: center;
+}
+
+ol {
+    list-style: none;
+}
+
+li {
+    padding: 10px;
+    border-bottom: solid #8fd3f4 4px;
+    counter-increment: item;
+}
+
+li:before {
+        content: counter(item);
+        font-size: 19px;
+        font-weight: bold;
+        background: #8fd3f4;
+        border: 5px solid #8fd3f4;
+        border-radius: 45%;
+        color: white;
+        text-align: center;
+        display: inline-block;
+        margin-right: 14px;
+        margin-bottom: 7px;
+        padding-right: 7px;
+        padding-left: 7px;
+
+}
+
+#lista {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    margin: 0px;
+    padding-left: 50px;
+    padding-bottom: 40px;
+    padding-top: 10px;
+    padding-right: 50px;
+}

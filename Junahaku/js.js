@@ -91,7 +91,7 @@ $(document).ready(function () {
         var pvm = new Date(document.getElementById("päivämäärä").value);
         pvm.setHours(pvm.getHours());
         var isoPvm = pvm.toISOString();
-        oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=5";
+        oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=4";
         console.log(oikeaURL.value);
         haeData();
     });

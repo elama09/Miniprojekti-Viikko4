@@ -314,7 +314,7 @@ $(document).ready(function () {
 
     }
 
-
+    $('#aloitusHaku').addClass('animated zoomIn');
 
 })
 

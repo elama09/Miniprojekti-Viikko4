@@ -43,7 +43,6 @@
 
         //Haetun sijainnin kordinaatit
         function success(data) {
-            console.dir(data)
             la_hakuSijainti = data.coords.latitude
             lo_hakuSijainti = data.coords.longitude
             //Jos halutaan että kartta latautuu vasta kun käyttäjä on hyväksynyt sijaintipalvelut. Näin toimii, mutta jos ei anna lupaa niin kartta ei lataudu.
@@ -52,9 +51,11 @@
 
         //Jos sijainti epäonnistuu
         function error(e) {
-            console.dir(e)
             alert('Sijainnin haku epäonnistui, päivitä sivu ja yritä uudelleen');
         }
+
+        $('#kartta').addClass('animated zoomIn');
+        $('#kartta2').addClass('animated zoomIn');
 
     </script>
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCePNpIIbvnybJtiYOe6h0v8oMv4gY4SaU">

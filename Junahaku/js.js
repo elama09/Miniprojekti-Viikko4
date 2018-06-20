@@ -41,7 +41,7 @@ $(document).ready(function () {
         console.dir(e)
         console.log('Toimiiko!?');
         $('#lähtöAsema').val(e.currentTarget.innerText);
-        $('#myUL').css('display', 'none');
+        $('#myUL li').css('display', 'none');
     }
 
     // Funktio ja ottaa valitun aseman SAAPUMINEN!
@@ -49,7 +49,7 @@ $(document).ready(function () {
         console.dir(e)
         console.log('Toimiiko!?');
         $('#saapumisAsema').val(e.currentTarget.innerText);
-        $('#myUL2').css('display', 'none');
+        $('#myUL2 li').css('display', 'none');
     }
 
     //Ei toimi kunnolla... Toimiiko!?!?!?

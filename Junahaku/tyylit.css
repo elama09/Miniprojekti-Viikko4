@@ -72,6 +72,11 @@ input[type-radio] {
     position: center;
     padding-left: 25px;
     padding-top: 10px;
+    
+}
+
+#logo:hover{
+    letter-spacing:3px;
 }
 
 #haeNappi {

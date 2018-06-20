@@ -174,6 +174,7 @@ $(document).ready(function () {
             success: function (data) {
                 tiedot = data;
                 console.dir(tiedot)
+               // $('#toinenKolumni').removeClass('animated zoomIn');
                 TulostaTiedot();
             }
         });
@@ -240,7 +241,9 @@ $(document).ready(function () {
             var isoPvm = pvm.toISOString();
             oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=4";
             console.log(oikeaURL);
+            $('#toinenKolumni').removeClass('animated zoomIn');
             haeData();
+            
         }
 
 
@@ -251,6 +254,8 @@ $(document).ready(function () {
 
     // Hakee junien tiedot ja tekee jotain!
     function TulostaTiedot() {
+        
+
         for (let i = 0; i < tiedot.length; i++) {
             let juna = tiedot[i].trainType + tiedot[i].trainNumber;
             let lähtö = new Date(tiedot[i].timeTableRows[lähtöIndeksi()].scheduledTime);
@@ -278,9 +283,9 @@ $(document).ready(function () {
             }
             var decimalTime = parseFloat(decimalTimeString);
             decimalTime = decimalTime * 60 * 60;
-            var hours = Math.floor((decimalTime / (60 * 60)));
+            var hours = Math.round((decimalTime / (60 * 60)));
             decimalTime = decimalTime - (hours * 60 * 60);
-            var minutes = Math.floor((decimalTime / 60));
+            var minutes = Math.round((decimalTime / 60));
             decimalTime = decimalTime - (minutes * 60);
             var seconds = Math.round(decimalTime);
             if (minutes < 10) {
@@ -300,15 +305,14 @@ $(document).ready(function () {
             //document.write(juna + ", Lähtee: " + lähtö.toLocaleTimeString("fi", optiot) + ", Perillä: " + perillä.toLocaleTimeString("fi", optiot))
         }
 
+        $('#toinenKolumni').addClass('animated zoomIn');
+
         if ($('#lista li').length == null || $('#lista li').length == 0) {
             console.log("JEEEEE!")
             $('#lista').html('<p class="animated flash">Hakuehdoillasi ei löytynyt yhteyksiä!</p>');
         }
 
     }
-
-
-
 
 
 

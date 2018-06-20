@@ -238,7 +238,7 @@ $(document).ready(function () {
             var pvm = new Date(document.getElementById("päivämäärä").value);
             pvm.setHours(pvm.getHours());
             var isoPvm = pvm.toISOString();
-            oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=10";
+            oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=4";
             console.log(oikeaURL);
             haeData();
         }
@@ -302,7 +302,7 @@ $(document).ready(function () {
 
         if ($('#lista li').length == null || $('#lista li').length == 0) {
             console.log("JEEEEE!")
-            $('#lista').html('<p class="animated flash">Ei löytynyt yhteyksiä!</p>');
+            $('#lista').html('<p class="animated flash">Hakuehdoillasi ei löytynyt yhteyksiä!</p>');
         }
 
     }

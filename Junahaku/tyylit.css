@@ -1,6 +1,9 @@
 ﻿body {
     background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
     counter-reset: item;
+    padding-bottom: 300px;
+    padding-top: 100px;
+    padding-right: 100px;
 }
 
 h1 {
@@ -15,23 +18,24 @@ html {
 
 label {
     font-family: 'Nunito', sans-serif;
+    padding-left: 5px;
 }
 
+/*
 input[type-radio] {
     width: 300px;
     height: 300px;
 }
-
 #app {
     border-width: thick;
+    
 }
-
 #alkuSivu {
     padding: 0px;
     transform: scale(1);
     float: left;
-
 }
+*/
 
 #kartta {
     height: 300px;
@@ -56,7 +60,6 @@ input[type-radio] {
     text-align: center;
 }
 
-
 #aloitusHaku {
     margin-left: 60px;
     padding-left: 40px;
@@ -68,19 +71,23 @@ input[type-radio] {
     margin-left: 20px;
     position: center;
     padding-left: 25px;
+    padding-top: 10px;
 }
 
 #haeNappi {
-    margin-left: 90px;
+    margin-left: 180px;
     position: center;
-    border: solid 3px white;
+    border: solid 2px white;
     font-weight: 700;
+    box-sizing: border-box;
+    margin-bottom: 15px;
 }
 
 #haeLähin {
-    margin-left:15px;
-    border: solid 3px white;
+    margin-left: 25px;
+    border: solid 2px white;
     font-weight: 700;
+    box-sizing: border-box;
 }
 
 ol {
@@ -88,26 +95,25 @@ ol {
 }
 
 li {
-    padding: 10px;
+    padding: 20px;
     border-bottom: solid #8fd3f4 4px;
     counter-increment: item;
 }
 
 li:before {
-        content: counter(item);
-        font-size: 19px;
-        font-weight: bold;
-        background: #8fd3f4;
-        border: 5px solid #8fd3f4;
-        border-radius: 45%;
-        color: white;
-        text-align: center;
-        display: inline-block;
-        margin-right: 14px;
-        margin-bottom: 7px;
-        padding-right: 7px;
-        padding-left: 7px;
-
+   content: counter(item);
+   font-size: 19px;
+   font-weight: bold;
+   background: #8fd3f4;
+   border: 5px solid #8fd3f4;
+   border-radius: 45%;
+   color: white;
+   text-align: center;
+   display: inline-block;
+   margin-right: 14px;
+   margin-bottom: 7px;
+   padding-right: 7px;
+   padding-left: 7px;
 }
 
 #lista {
@@ -123,11 +129,10 @@ li:before {
 }
 
 #myUL li {
-    display:none;
-    padding:0px;
-    text-decoration:none;
-    list-style-type:none;
-
+    display: none;
+    padding: 0px;
+    text-decoration: none;
+    list-style-type: none;
 }
 
 #myUL2 li {
@@ -147,7 +152,11 @@ form.submitted input:invalid {
     background-color: mistyrose;
 }
 
-#lista p {
-    -webkit-animation-duration: 2s;
-    -webkit-animation-delay: 1s;
+ol p {
+    font-family: 'Nunito', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: black;
+    padding-top: 40px;
+    padding-left: 30px;
 }

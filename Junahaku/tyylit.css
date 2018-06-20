@@ -113,3 +113,18 @@ li:before {
     padding-top: 10px;
     padding-right: 50px;
 }
+
+#myUL li {
+    display:none;
+    padding:0px;
+    text-decoration:none;
+    list-style-type:none;
+
+}
+
+#myUL2 li {
+    display: none;
+    padding: 0px;
+    text-decoration: none;
+    list-style-type: none;
+}

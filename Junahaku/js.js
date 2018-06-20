@@ -206,34 +206,46 @@ $(document).ready(function () {
         console.log(lähinAsemaNimi);
     })
 
-    //löytää oikeat asemat
+    //löytää oikeat junat
     $('#haeNappi').click(function () {
 
         //Validointi logiikka
-        if ($('#lähtöAsema').val() == "" || $('#saapumisAsema').val() == "") {
-            $('form').addClass('submitted');
-        //Kaikki tapahtumat 'hae junia' napin jälkeen
-        } else {
-            $('#toinenKolumni').addClass('col')
-            $('#kolmasKolumni').addClass('col')
-            $('#tyhjäKolumni').addClass('col-1')
-            $('#divContainerPoisto').removeClass('container')
-            $('#kolmasKolumni').load("Kartta.html")
-            $('#toinenKolumni').load("Junatulokset.html")
+        let lähtöAsemaOikein = false;
+        let saapumisAsemaOikein = false;
+        for (let l = 0; l < asemienNimet.length; l++) {
+            if ($('#lähtöAsema').val() == "" || $('#saapumisAsema').val() == "") {
+                $('form').addClass('submitted');
+                break;
+            }
+            if ($('#lähtöAsema').val() == asemienNimet[l]) {
+                lähtöAsemaOikein = true;
+            }
+            if ($('#saapumisAsema').val() == asemienNimet[l]) {
+                saapumisAsemaOikein = true;
+            }
+            if (lähtöAsemaOikein == true && saapumisAsemaOikein == true) {
+                $('#toinenKolumni').addClass('col')
+                $('#kolmasKolumni').addClass('col')
+                $('#tyhjäKolumni').addClass('col-1')
+                $('#divContainerPoisto').removeClass('container')
+                $('#kolmasKolumni').load("Kartta.html")
+                $('#toinenKolumni').load("Junatulokset.html")
 
-            lähtöAsema = document.getElementById('lähtöAsema').value;
-            etsiAsemaLähtö();
-            saapumisAsema = document.getElementById('saapumisAsema').value;
-            etsiAsemaSaapumis();
-            console.log(lähtöAsemaLyhenne);
-            console.log(saapumisAsemaLyhenne);
-            var pvm = new Date(document.getElementById("päivämäärä").value);
-            pvm.setHours(pvm.getHours());
-            var isoPvm = pvm.toISOString();
-            oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=4";
-            console.log(oikeaURL);
-            $('#toinenKolumni').removeClass('animated zoomIn');
-            haeData();
+                lähtöAsema = document.getElementById('lähtöAsema').value;
+                etsiAsemaLähtö();
+                saapumisAsema = document.getElementById('saapumisAsema').value;
+                etsiAsemaSaapumis();
+                console.log(lähtöAsemaLyhenne);
+                console.log(saapumisAsemaLyhenne);
+                var pvm = new Date(document.getElementById("päivämäärä").value);
+                pvm.setHours(pvm.getHours());
+                var isoPvm = pvm.toISOString();
+                oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=4";
+                console.log(oikeaURL);
+                $('#toinenKolumni').removeClass('animated zoomIn');
+                haeData();
+                break;
+            }
         }
     });
 

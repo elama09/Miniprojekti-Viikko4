@@ -145,12 +145,6 @@ $(document).ready(function () {
     }
 
 
-    function HaeKaikkiOlemassaOlevatAsemat() {
-
-    }
-
-
-
 
 })
 

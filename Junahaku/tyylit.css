@@ -113,3 +113,14 @@ li:before {
     padding-top: 10px;
     padding-right: 50px;
 }
+
+input.touched:invalid {
+    border: 3px solid salmon;
+    background-color: mistyrose;
+}
+form.submitted input:invalid { 
+    border:3px solid salmon;
+    background-color: mistyrose;
+}
+
+

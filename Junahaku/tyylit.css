@@ -117,11 +117,17 @@ li:before {
     padding-right: 50px;
 }
 
+#lista p {
+    -webkit-animation-duration: 2s;
+    -webkit-animation-delay: 1s;
+    -webkit-animation-iteration-count: 2;
+}
+
 #myUL li {
-    display: none;
-    padding: 0px;
-    text-decoration: none;
-    list-style-type: none;
+   display: none;
+   padding: 0px;
+   text-decoration: none;
+   list-style-type: none;
 }
 
 #myUL2 li {

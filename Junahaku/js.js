@@ -36,6 +36,11 @@ $(document).ready(function () {
         }
     });
 
+    var date = new Date();
+    var tämäHetki = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toJSON();
+    tämäHetki = tämäHetki.slice(0, 16);
+    document.getElementById("päivämäärä").defaultValue = tämäHetki;
+
     // Funktio ja ottaa valitun aseman LÄHTÖ!
     function jokainenAsema(e) {
         console.dir(e)

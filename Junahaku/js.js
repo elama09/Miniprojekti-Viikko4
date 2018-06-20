@@ -9,12 +9,13 @@ var saapumisAsemaLyhenne;
 var asematArray;
 var päivämäärä = document.getElementById("päivämäärä").value;
 var asemienNimet = [];
+
 $(document).ready(function () {
 
+    //Hakee heti alkuun json tiedot
     $.ajax({
         type: "get",
         url: "https://rata.digitraffic.fi/api/v1/metadata/stations",
-        //data: "name=John&location=Boston",
         dataType: "json",
         success: function (data) {
             var dataSuodatettuHenkilöliikenne = data.filter(function (item) {
@@ -24,11 +25,10 @@ $(document).ready(function () {
             kaikkiAsemat = dataSuodatettuHenkilöliikenne;
             console.dir(kaikkiAsemat)
 
-            //Array kaikkien asemien nimet / TOIMIII!!
+            //Kaikkien asemien nimet, jotta filtteröinti toimii
             $.each(kaikkiAsemat, function () {
                 let väliaikainen = this.stationName;
                 asemienNimet.push(väliaikainen);
-                //$('#myUL').append('<li>' + väliaikainen + '</li>')
                 $('<li><a>' + väliaikainen + '</a></li >').click(jokainenAsema).appendTo('#myUL');
                 $('<li><a>' + väliaikainen + '</a></li >').click(jokainenAsemaSaapuminen).appendTo('#myUL2');
 
@@ -36,6 +36,7 @@ $(document).ready(function () {
         }
     });
 
+    //Nykyisen ajan näyttäminen
     var date = new Date();
     var tämäHetki = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toJSON();
     tämäHetki = tämäHetki.slice(0, 16);
@@ -57,7 +58,7 @@ $(document).ready(function () {
         $('#myUL2 li').css('display', 'none');
     }
 
-    //Ei toimi kunnolla... Toimiiko!?!?!?
+    //Lähtöasema filtteri
     $('#lähtöAsema').keyup(function () {
         if ($(this).val().length > 2) {
             let input, filter, ul, li, a, i;
@@ -66,7 +67,6 @@ $(document).ready(function () {
             ul = document.getElementById("myUL");
             li = ul.getElementsByTagName('li');
 
-            // Loop through all list items, and hide those who don't match the search query
             for (i = 0; i < li.length; i++) {
                 a = li[i].getElementsByTagName("a")[0];
                 if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
@@ -80,6 +80,7 @@ $(document).ready(function () {
         }
     })
 
+    //Lähtöasema filtteri
     $('#saapumisAsema').keyup(function () {
         if ($(this).val().length > 2) {
             let input, filter, ul, li, a, i;
@@ -88,7 +89,6 @@ $(document).ready(function () {
             ul = document.getElementById("myUL2");
             li = ul.getElementsByTagName('li');
 
-            // Loop through all list items, and hide those who don't match the search query
             for (i = 0; i < li.length; i++) {
                 a = li[i].getElementsByTagName("a")[0];
                 if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
@@ -101,8 +101,6 @@ $(document).ready(function () {
             $('#myUL2 li').css('display', 'none');
         }
     })
-    //MIHIN TÄMÄ? ERILLINN NAPPI!!??
-
 
     function etsiLähinAsema() {
         navigator.geolocation.getCurrentPosition(success, error, {
@@ -124,10 +122,8 @@ $(document).ready(function () {
             console.dir(e)
             alert('Sijainnin haku epäonnistui, päivitä sivu ja yritä uudelleen');
         }
-        //TEE LOOPPI JA ETSI
-
-
     }
+
     //Looppaa kaikki asemat ja etsii lähimmän -FUNKTIO
     var lähinAsemaNimi;
     var lähinAsemaMatkaKM = 99999;
@@ -156,13 +152,10 @@ $(document).ready(function () {
                 lähinAsemaNimi = this.stationName;
             }
         });
+
         console.log(lähinAsemaNimi)
         console.log(lähinAsemaMatkaKM)
         $('#lähtöAsema').val(lähinAsemaNimi);
-        // document.getElementById("lähtöAsema").innerText = lähinAsemaNimi;
-        //if (unit == "K") { dist = dist * 1.609344 }
-        //if (unit == "N") { dist = dist * 0.8684 }
-
     }
 
     // Hakee lähtö ja saapumis välillä menevät junat
@@ -174,7 +167,6 @@ $(document).ready(function () {
             success: function (data) {
                 tiedot = data;
                 console.dir(tiedot)
-               // $('#toinenKolumni').removeClass('animated zoomIn');
                 TulostaTiedot();
             }
         });
@@ -212,16 +204,15 @@ $(document).ready(function () {
         console.log('haetaan lähin asema')
         etsiLähinAsema();
         console.log(lähinAsemaNimi);
-
-
     })
 
     //löytää oikeat asemat
     $('#haeNappi').click(function () {
-        //VAlidointi logiikka
 
+        //Validointi logiikka
         if ($('#lähtöAsema').val() == "" || $('#saapumisAsema').val() == "") {
             $('form').addClass('submitted');
+        //Kaikki tapahtumat 'hae junia' napin jälkeen
         } else {
             $('#toinenKolumni').addClass('col')
             $('#kolmasKolumni').addClass('col')
@@ -243,19 +234,11 @@ $(document).ready(function () {
             console.log(oikeaURL);
             $('#toinenKolumni').removeClass('animated zoomIn');
             haeData();
-            
         }
-
-
-
     });
-
-    var optiot = { hour: '2-digit', minute: '2-digit', hour12: false };
 
     // Hakee junien tiedot ja tekee jotain!
     function TulostaTiedot() {
-        
-
         for (let i = 0; i < tiedot.length; i++) {
             let juna = tiedot[i].trainType + tiedot[i].trainNumber;
             let lähtö = new Date(tiedot[i].timeTableRows[lähtöIndeksi()].scheduledTime);
@@ -277,10 +260,12 @@ $(document).ready(function () {
                 }
             }
 
+            var optiot = { hour: '2-digit', minute: '2-digit', hour12: false };
             var decimalTimeString = (perillä.toLocaleTimeString("fi", optiot) - lähtö.toLocaleTimeString("fi", optiot));
             if (decimalTimeString < 0) {
                 decimalTimeString = (decimalTimeString * -1)
             }
+
             var decimalTime = parseFloat(decimalTimeString);
             decimalTime = decimalTime * 60 * 60;
             var hours = Math.round((decimalTime / (60 * 60)));
@@ -297,16 +282,16 @@ $(document).ready(function () {
 
             var kesto = ("" + hours + ":" + minutes + ":" + seconds);
 
-
+            //Junien tulostus näytölle
             document.getElementById("lista").innerHTML += '<li><b>Juna '
                 + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
                 + ' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
                 + ' ' + saapumisAsema + ' <br /> Kesto: ' + kesto + ' <br /></li > ';
-            //document.write(juna + ", Lähtee: " + lähtö.toLocaleTimeString("fi", optiot) + ", Perillä: " + perillä.toLocaleTimeString("fi", optiot))
         }
 
         $('#toinenKolumni').addClass('animated zoomIn');
 
+        //Jos ei yhtäkään juna osumaa
         if ($('#lista li').length == null || $('#lista li').length == 0) {
             console.log("JEEEEE!")
             $('#lista').html('<p class="animated flash">Hakuehdoillasi ei löytynyt yhteyksiä!</p>');
@@ -317,7 +302,3 @@ $(document).ready(function () {
     $('#aloitusHaku').addClass('animated zoomIn');
 
 })
-
-
-//Tässä saadaan asemien välinen yhteys tiettynä päivänä 24h eteenpäin
-//https://rata.digitraffic.fi/api/v1/live-trains/station/HKI/TPE?startDate=2018-06-25T16:28:59.564Z

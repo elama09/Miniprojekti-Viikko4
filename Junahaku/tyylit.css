@@ -21,22 +21,6 @@ label {
     padding-left: 5px;
 }
 
-/*
-input[type-radio] {
-    width: 300px;
-    height: 300px;
-}
-#app {
-    border-width: thick;
-    
-}
-#alkuSivu {
-    padding: 0px;
-    transform: scale(1);
-    float: left;
-}
-*/
-
 #kartta {
     height: 300px;
     width: 310px;

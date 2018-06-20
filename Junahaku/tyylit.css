@@ -146,3 +146,8 @@ form.submitted input:invalid {
     border: 3px solid salmon;
     background-color: mistyrose;
 }
+
+#lista p {
+    -webkit-animation-duration: 2s;
+    -webkit-animation-delay: 1s;
+}

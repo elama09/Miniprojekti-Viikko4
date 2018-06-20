@@ -59,42 +59,50 @@ $(document).ready(function () {
 
     //Ei toimi kunnolla... Toimiiko!?!?!?
     $('#lähtöAsema').keyup(function () {
-        let input, filter, ul, li, a, i;
-        input = document.getElementById('lähtöAsema');
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("myUL");
-        li = ul.getElementsByTagName('li');
+        if ($(this).val().length > 2) {
+            let input, filter, ul, li, a, i;
+            input = document.getElementById('lähtöAsema');
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL");
+            li = ul.getElementsByTagName('li');
 
-        // Loop through all list items, and hide those who don't match the search query
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "block";
-            } else {
-                li[i].style.display = "none";
+            // Loop through all list items, and hide those who don't match the search query
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "block";
+                } else {
+                    li[i].style.display = "none";
+                }
             }
+        } else {
+            $('#myUL li').css('display', 'none');
         }
     })
 
     $('#saapumisAsema').keyup(function () {
-        let input, filter, ul, li, a, i;
-        input = document.getElementById('saapumisAsema');
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("myUL2");
-        li = ul.getElementsByTagName('li');
+        if ($(this).val().length > 2) {
+            let input, filter, ul, li, a, i;
+            input = document.getElementById('saapumisAsema');
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL2");
+            li = ul.getElementsByTagName('li');
 
-        // Loop through all list items, and hide those who don't match the search query
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "block";
-            } else {
-                li[i].style.display = "none";
+            // Loop through all list items, and hide those who don't match the search query
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "block";
+                } else {
+                    li[i].style.display = "none";
+                }
             }
+        } else {
+            $('#myUL2 li').css('display', 'none');
         }
     })
     //MIHIN TÄMÄ? ERILLINN NAPPI!!??
- 
+
 
     function etsiLähinAsema() {
         navigator.geolocation.getCurrentPosition(success, error, {
@@ -151,7 +159,7 @@ $(document).ready(function () {
         console.log(lähinAsemaNimi)
         console.log(lähinAsemaMatkaKM)
         $('#lähtöAsema').val(lähinAsemaNimi);
-       // document.getElementById("lähtöAsema").innerText = lähinAsemaNimi;
+        // document.getElementById("lähtöAsema").innerText = lähinAsemaNimi;
         //if (unit == "K") { dist = dist * 1.609344 }
         //if (unit == "N") { dist = dist * 0.8684 }
 
@@ -193,23 +201,6 @@ $(document).ready(function () {
         });
     }
 
-    //funktio - haetaan saapumis-/lähtöaika
-    //function haeAika() {
-    //    $.each(kaikkiAsemat, function (indexInArray, valueOfElement) {
-    //        if (document.getElementById("lähtöAika").checked = true) {
-
-    //            if (this.stationName == lähtöAsema) {
-    //                console.log(document.getElementById("päivämäärä").value)
-    //                console.log(päivämäärä)
-
-    //                if (this.startDate >= päivämäärä) {
-    //                    console.log("pvm2")
-    //                }
-    //            }
-    //        }
-    //    });
-    //}
-
     //Värittää tyjäksi jätetyn kentän
     $('input').blur(function (e) {
         $(this).addClass('touched');
@@ -220,7 +211,7 @@ $(document).ready(function () {
         console.log('haetaan lähin asema')
         etsiLähinAsema();
         console.log(lähinAsemaNimi);
-        
+
 
     })
 
@@ -237,6 +228,7 @@ $(document).ready(function () {
             $('#divContainerPoisto').removeClass('container')
             $('#kolmasKolumni').load("Kartta.html")
             $('#toinenKolumni').load("Junatulokset.html")
+
             lähtöAsema = document.getElementById('lähtöAsema').value;
             etsiAsemaLähtö();
             saapumisAsema = document.getElementById('saapumisAsema').value;
@@ -246,13 +238,13 @@ $(document).ready(function () {
             var pvm = new Date(document.getElementById("päivämäärä").value);
             pvm.setHours(pvm.getHours());
             var isoPvm = pvm.toISOString();
-            oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=4";
+            oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=10";
             console.log(oikeaURL);
             haeData();
         }
 
 
-        
+
     });
 
     var optiot = { hour: '2-digit', minute: '2-digit', hour12: false };
@@ -266,7 +258,7 @@ $(document).ready(function () {
 
             function lähtöIndeksi() {
                 for (let b = 0; b < tiedot[i].timeTableRows.length; b++) {
-                    if ((tiedot[i].timeTableRows[b].stationShortCode) == lähtöAsemaLyhenne && (tiedot[i].timeTableRows[b].trainStopping == true)) {
+                    if ((tiedot[i].timeTableRows[b].stationShortCode) == lähtöAsemaLyhenne && (tiedot[i].timeTableRows[b].type == 'DEPARTURE') && (tiedot[i].timeTableRows[b].trainStopping == true)) {
                         return b;
                     }
                 }
@@ -274,7 +266,7 @@ $(document).ready(function () {
 
             function saapumisIndeksi() {
                 for (let a = 0; a < tiedot[i].timeTableRows.length; a++) {
-                    if ((tiedot[i].timeTableRows[a].stationShortCode) == saapumisAsemaLyhenne && (tiedot[i].timeTableRows[a].trainStopping == true)) {
+                    if ((tiedot[i].timeTableRows[a].stationShortCode) == saapumisAsemaLyhenne && (tiedot[i].timeTableRows[a].type == 'ARRIVAL') && (tiedot[i].timeTableRows[a].trainStopping == true)) {
                         return a;
                     }
                 }
@@ -301,16 +293,16 @@ $(document).ready(function () {
             var kesto = ("" + hours + ":" + minutes + ":" + seconds);
 
 
-            document.getElementById("lista").innerHTML += '<li><b>Lähijuna '
+            document.getElementById("lista").innerHTML += '<li><b>Juna '
                 + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
                 + ' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
-                + ' ' + saapumisAsema +' <br /> Kesto: ' + kesto + ' <br /></li > ';
+                + ' ' + saapumisAsema + ' <br /> Kesto: ' + kesto + ' <br /></li > ';
             //document.write(juna + ", Lähtee: " + lähtö.toLocaleTimeString("fi", optiot) + ", Perillä: " + perillä.toLocaleTimeString("fi", optiot))
         }
 
         if ($('#lista li').length == null || $('#lista li').length == 0) {
             console.log("JEEEEE!")
-            $('#lista').html('<p>Ei löytynyt yhteyksiä!</p>');
+            $('#lista').html('<p class="animated flash">Ei löytynyt yhteyksiä!</p>');
         }
 
     }

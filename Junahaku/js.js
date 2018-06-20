@@ -194,21 +194,21 @@ $(document).ready(function () {
     }
 
     //funktio - haetaan saapumis-/lähtöaika
-    function haeAika() {
-        $.each(kaikkiAsemat, function (indexInArray, valueOfElement) {
-            if (document.getElementById("lähtöAika").checked = true) {
+    //function haeAika() {
+    //    $.each(kaikkiAsemat, function (indexInArray, valueOfElement) {
+    //        if (document.getElementById("lähtöAika").checked = true) {
 
-                if (this.stationName == lähtöAsema) {
-                    console.log(document.getElementById("päivämäärä").value)
-                    console.log(päivämäärä)
+    //            if (this.stationName == lähtöAsema) {
+    //                console.log(document.getElementById("päivämäärä").value)
+    //                console.log(päivämäärä)
 
-                    if (this.startDate >= päivämäärä) {
-                        console.log("pvm2")
-                    }
-                }
-            }
-        });
-    }
+    //                if (this.startDate >= päivämäärä) {
+    //                    console.log("pvm2")
+    //                }
+    //            }
+    //        }
+    //    });
+    //}
 
     //Värittää tyjäksi jätetyn kentän
     $('input').blur(function (e) {
@@ -228,33 +228,31 @@ $(document).ready(function () {
     $('#haeNappi').click(function () {
         //VAlidointi logiikka
 
-        if ($('#lähtöAsema').val() === "" || $('#saapumisAsema').val() === "") {
-            $('form').click(function (e) {
-                e.preventDefault();
-                $('form').addClass('submitted')
-            })
+        if ($('#lähtöAsema').val() == "" || $('#saapumisAsema').val() == "") {
+            $('form').addClass('submitted');
+        } else {
+            $('#toinenKolumni').addClass('col')
+            $('#kolmasKolumni').addClass('col')
+            $('#tyhjäKolumni').addClass('col-1')
+            $('#divContainerPoisto').removeClass('container')
+            $('#kolmasKolumni').load("Kartta.html")
+            $('#toinenKolumni').load("Junatulokset.html")
+            lähtöAsema = document.getElementById('lähtöAsema').value;
+            etsiAsemaLähtö();
+            saapumisAsema = document.getElementById('saapumisAsema').value;
+            etsiAsemaSaapumis();
+            console.log(lähtöAsemaLyhenne);
+            console.log(saapumisAsemaLyhenne);
+            var pvm = new Date(document.getElementById("päivämäärä").value);
+            pvm.setHours(pvm.getHours());
+            var isoPvm = pvm.toISOString();
+            oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=4";
+            console.log(oikeaURL);
+            haeData();
         }
 
 
-        $('#toinenKolumni').addClass('col')
-        $('#kolmasKolumni').addClass('col')
-        $('#tyhjäKolumni').addClass('col-1')
-        $('#divContainerPoisto').removeClass('container')
-        $('#kolmasKolumni').load("Kartta.html")
-        $('#toinenKolumni').load("Junatulokset.html") 
-        lähtöAsema = document.getElementById('lähtöAsema').value;
-        etsiAsemaLähtö();
-        saapumisAsema = document.getElementById('saapumisAsema').value;
-        etsiAsemaSaapumis();
-        haeAika();
-        console.log(lähtöAsemaLyhenne);
-        console.log(saapumisAsemaLyhenne);
-        var pvm = new Date(document.getElementById("päivämäärä").value);
-        pvm.setHours(pvm.getHours());
-        var isoPvm = pvm.toISOString();
-        oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=4";
-        console.log(oikeaURL);
-        haeData();
+        
     });
 
     var optiot = { hour: '2-digit', minute: '2-digit', hour12: false };
@@ -302,8 +300,6 @@ $(document).ready(function () {
 
             var kesto = ("" + hours + ":" + minutes + ":" + seconds);
 
-            //EDIT KOKEILU
-            
 
             document.getElementById("lista").innerHTML += '<li><b>Lähijuna '
                 + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
@@ -311,6 +307,12 @@ $(document).ready(function () {
                 + ' ' + saapumisAsema +' <br /> Kesto: ' + kesto + ' <br /></li > ';
             //document.write(juna + ", Lähtee: " + lähtö.toLocaleTimeString("fi", optiot) + ", Perillä: " + perillä.toLocaleTimeString("fi", optiot))
         }
+
+        if ($('#lista li').length == null || $('#lista li').length == 0) {
+            console.log("JEEEEE!")
+            $('#lista').html('Ei löytynyt yhteyksiä!')
+        }
+
     }
 
 

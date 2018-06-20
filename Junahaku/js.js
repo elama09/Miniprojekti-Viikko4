@@ -207,7 +207,17 @@ $(document).ready(function () {
 
     //löytää oikeat asemat
     $('#haeNappi').click(function () {
-        //lähtöAsema = $('kenttä1').html().val;
+        //VAlidointi logiikka
+
+
+
+        $('#toinenKolumni').addClass('col')
+        $('#kolmasKolumni').addClass('col')
+        $('#tyhjäKolumni').addClass('col-1')
+        $('#divContainerPoisto').removeClass('container')
+
+        $('#kolmasKolumni').load("Kartta.html")
+        $('#toinenKolumni').load("Junatulokset.html") 
         lähtöAsema = document.getElementById('lähtöAsema').value;
         etsiAsemaLähtö();
         saapumisAsema = document.getElementById('saapumisAsema').value;

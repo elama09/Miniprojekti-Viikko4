@@ -89,7 +89,7 @@ $(document).ready(function () {
         }
     })
     //MIHIN TÄMÄ? ERILLINN NAPPI!!??
-    etsiLähinAsema();
+ 
 
     function etsiLähinAsema() {
         navigator.geolocation.getCurrentPosition(success, error, {
@@ -145,8 +145,8 @@ $(document).ready(function () {
         });
         console.log(lähinAsemaNimi)
         console.log(lähinAsemaMatkaKM)
-        $('#lähtöAsema').html(lähinAsemaNimi);
-        document.getElementById("lähtöAsema").innerText = lähinAsemaNimi;
+        $('#lähtöAsema').val(lähinAsemaNimi);
+       // document.getElementById("lähtöAsema").innerText = lähinAsemaNimi;
         //if (unit == "K") { dist = dist * 1.609344 }
         //if (unit == "N") { dist = dist * 0.8684 }
 
@@ -208,6 +208,15 @@ $(document).ready(function () {
     //Värittää tyjäksi jätetyn kentän
     $('input').blur(function (e) {
         $(this).addClass('touched');
+    })
+
+    //Hae lähin asema funktio
+    $('#haeLähin').click(function (e) {
+        console.log('haetaan lähin asema')
+        etsiLähinAsema();
+        console.log(lähinAsemaNimi);
+        
+
     })
 
     //löytää oikeat asemat

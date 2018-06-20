@@ -52,15 +52,6 @@ $(document).ready(function () {
         $('#myUL2').css('display', 'none');
     }
 
-
-
-
-    $('#myUL li a').click(function () {
-        //e.preventDefault()
-        console.log('JEE!')
-        //$('#lähtöAsema').html('Toimiiko');
-    });
-
     //Ei toimi kunnolla... Toimiiko!?!?!?
     $('#lähtöAsema').keyup(function () {
         let input, filter, ul, li, a, i;

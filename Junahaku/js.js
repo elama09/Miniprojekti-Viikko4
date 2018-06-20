@@ -205,17 +205,27 @@ $(document).ready(function () {
         });
     }
 
+    //Värittää tyjäksi jätetyn kentän
+    $('input').blur(function (e) {
+        $(this).addClass('touched');
+    })
+
     //löytää oikeat asemat
     $('#haeNappi').click(function () {
         //VAlidointi logiikka
 
+        if ($('#lähtöAsema').val() === "" || $('#saapumisAsema').val() === "") {
+            $('form').click(function (e) {
+                e.preventDefault();
+                $('form').addClass('submitted')
+            })
+        }
 
 
         $('#toinenKolumni').addClass('col')
         $('#kolmasKolumni').addClass('col')
         $('#tyhjäKolumni').addClass('col-1')
         $('#divContainerPoisto').removeClass('container')
-
         $('#kolmasKolumni').load("Kartta.html")
         $('#toinenKolumni').load("Junatulokset.html") 
         lähtöAsema = document.getElementById('lähtöAsema').value;

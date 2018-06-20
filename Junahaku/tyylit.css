@@ -128,3 +128,13 @@ li:before {
     text-decoration: none;
     list-style-type: none;
 }
+
+input.touched:invalid {
+    border: 3px solid salmon;
+    background-color: mistyrose;
+}
+
+form.submitted input:invalid {
+    border: 3px solid salmon;
+    background-color: mistyrose;
+}

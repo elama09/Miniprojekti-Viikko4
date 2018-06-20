@@ -310,7 +310,7 @@ $(document).ready(function () {
 
         if ($('#lista li').length == null || $('#lista li').length == 0) {
             console.log("JEEEEE!")
-            $('#lista').html('Ei löytynyt yhteyksiä!')
+            $('#lista').html('<p>Ei löytynyt yhteyksiä!</p>');
         }
 
     }

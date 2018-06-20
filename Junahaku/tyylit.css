@@ -73,6 +73,14 @@ input[type-radio] {
 #haeNappi {
     margin-left: 90px;
     position: center;
+    border: solid 3px white;
+    font-weight: 700;
+}
+
+#haeLähin {
+    margin-left:15px;
+    border: solid 3px white;
+    font-weight: 700;
 }
 
 ol {

@@ -308,7 +308,7 @@ $(document).ready(function () {
             document.getElementById("lista").innerHTML += '<li><b>Juna '
                 + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
                 + ' ' + '(' + muutaViikonPäiväksi(lähtö.getDay()) + ')' +' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
-                + ' ' + '('+ muutaViikonPäiväksi(perillä.getDay()) +')' + ' ' + saapumisAsema + ' <br /> Kesto: ' + kesto + ' <br /></li > ';
+                + ' ' + '('+ muutaViikonPäiväksi(perillä.getDay()) +')' + ' ' + saapumisAsema + ' <br /></li > ';
         }
 
         $('#toinenKolumni').addClass('animated zoomIn');

@@ -255,6 +255,11 @@ $(document).ready(function () {
             let juna = tiedot[i].trainType + tiedot[i].trainNumber;
             let lähtö = new Date(tiedot[i].timeTableRows[lähtöIndeksi()].scheduledTime);
             let perillä = new Date(tiedot[i].timeTableRows[saapumisIndeksi()].scheduledTime);
+            console.log('testi! katso aika!')
+            console.log(lähtö.getDate())
+            console.log((lähtö.getMonth() + 1))
+            console.log(perillä.getDate())
+            console.log((perillä.getMonth() + 1))
 
             function lähtöIndeksi() {
                 for (let b = 0; b < tiedot[i].timeTableRows.length; b++) {
@@ -270,6 +275,11 @@ $(document).ready(function () {
                         return a;
                     }
                 }
+            }
+
+            function muutaViikonPäiväksi(päivä) {
+                var viikonPäivät = ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'];
+                return viikonPäivät[päivä]
             }
 
             var optiot = { hour: '2-digit', minute: '2-digit', hour12: false };
@@ -297,8 +307,8 @@ $(document).ready(function () {
             //Junien tulostus näytölle
             document.getElementById("lista").innerHTML += '<li><b>Juna '
                 + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
-                + ' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
-                + ' ' + saapumisAsema + ' <br /> Kesto: ' + kesto + ' <br /></li > ';
+                + ' ' + '(' + muutaViikonPäiväksi(lähtö.getDay()) + ')' +' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
+                + ' ' + '('+ muutaViikonPäiväksi(perillä.getDay()) +')' + ' ' + saapumisAsema + ' <br /> Kesto: ' + kesto + ' <br /></li > ';
         }
 
         $('#toinenKolumni').addClass('animated zoomIn');

@@ -280,6 +280,20 @@ $(document).ready(function () {
                     break;
                 }
 
+                //Keston laskeminen - Sekunteja ei oteta huomioon, todellisuudessa joskus 30s esim
+                let lähtöiso = lähtö.toISOString().slice(0, 19) + 'Z';
+                let perilläiso = perillä.toISOString().slice(0, 19) + 'Z';
+                lähtöiso = new Date(lähtöiso)
+                perilläiso = new Date(perilläiso)
+                let kesto = (perilläiso - lähtöiso) / 1000 / 60;
+                let tunnit = Math.floor(kesto / 60)
+                let minuutit = Math.floor(kesto % 60);
+                if (minuutit < 10) {
+                    kesto = tunnit + ':0' + minuutit;
+                } else {
+                    kesto = tunnit + ':' + minuutit;
+                }
+
                 function lähtöIndeksi() {
                     for (let b = 0; b < tiedot[i].timeTableRows.length; b++) {
                         if ((tiedot[i].timeTableRows[b].stationShortCode) == lähtöAsemaLyhenne && (tiedot[i].timeTableRows[b].type == 'DEPARTURE') && (tiedot[i].timeTableRows[b].trainStopping == true)) {
@@ -300,7 +314,8 @@ $(document).ready(function () {
                 document.getElementById("lista").innerHTML += '<li><b>Juna '
                     + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
                     + ' ' + '(' + muutaViikonPäiväksi(lähtö.getDay()) + ')' + ' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
-                    + ' ' + '(' + muutaViikonPäiväksi(perillä.getDay()) + ')' + ' ' + saapumisAsema + ' <br /></li > ';
+                    + ' ' + '(' + muutaViikonPäiväksi(perillä.getDay()) + ')' + ' ' + saapumisAsema + ' <br />' + 'Kesto: '
+                    + kesto + '</li > ';
             }
 
             $('#toinenKolumni').addClass('animated zoomIn');
@@ -317,6 +332,20 @@ $(document).ready(function () {
                 let lähtö = new Date(tiedot[i].timeTableRows[lähtöIndeksi()].scheduledTime);
                 let perillä = new Date(tiedot[i].timeTableRows[saapumisIndeksi()].scheduledTime);
 
+                //Keston laskeminen - Sekunteja ei oteta huomioon, todellisuudessa joskus 30s esim
+                let lähtöiso = lähtö.toISOString().slice(0, 19) + 'Z';
+                let perilläiso = perillä.toISOString().slice(0, 19) + 'Z';
+                lähtöiso = new Date(lähtöiso)
+                perilläiso = new Date(perilläiso)
+                let kesto = (perilläiso - lähtöiso) / 1000 / 60;
+                let tunnit = Math.floor(kesto / 60)
+                let minuutit = Math.floor(kesto % 60);
+                if (minuutit < 10) {
+                    kesto = tunnit + ':0' + minuutit;
+                } else {
+                    kesto = tunnit + ':' + minuutit;
+                }
+
                 function lähtöIndeksi() {
                     for (let b = 0; b < tiedot[i].timeTableRows.length; b++) {
                         if ((tiedot[i].timeTableRows[b].stationShortCode) == lähtöAsemaLyhenne && (tiedot[i].timeTableRows[b].type == 'DEPARTURE') && (tiedot[i].timeTableRows[b].trainStopping == true)) {
@@ -337,7 +366,8 @@ $(document).ready(function () {
                 document.getElementById("lista").innerHTML += '<li><b>Juna '
                     + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
                     + ' ' + '(' + muutaViikonPäiväksi(lähtö.getDay()) + ')' + ' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
-                    + ' ' + '(' + muutaViikonPäiväksi(perillä.getDay()) + ')' + ' ' + saapumisAsema + ' <br /></li > ';
+                    + ' ' + '(' + muutaViikonPäiväksi(perillä.getDay()) + ')' + ' ' + saapumisAsema + ' <br />' + 'Kesto: '
+                    + kesto + '</li > ';
             }
 
             $('#toinenKolumni').addClass('animated zoomIn');

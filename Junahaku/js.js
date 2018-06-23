@@ -44,16 +44,12 @@ $(document).ready(function () {
 
     // Funktio ja ottaa valitun aseman LÄHTÖ!
     function jokainenAsema(e) {
-        console.dir(e)
-        console.log('Toimiiko!?');
         $('#lähtöAsema').val(e.currentTarget.innerText);
         $('#myUL li').css('display', 'none');
     }
 
     // Funktio ja ottaa valitun aseman SAAPUMINEN!
     function jokainenAsemaSaapuminen(e) {
-        console.dir(e)
-        console.log('Toimiiko!?');
         $('#saapumisAsema').val(e.currentTarget.innerText);
         $('#myUL2 li').css('display', 'none');
     }
@@ -109,7 +105,6 @@ $(document).ready(function () {
 
         //Haetun sijainnin kordinaatit
         function success(data) {
-            console.dir(data)
             la_hakuSijainti = data.coords.latitude
             lo_hakuSijainti = data.coords.longitude
             //Jos halutaan että kartta latautuu vasta kun käyttäjä on hyväksynyt sijaintipalvelut. Näin toimii, mutta jos ei anna lupaa niin kartta ei lataudu.
@@ -152,9 +147,6 @@ $(document).ready(function () {
                 lähinAsemaNimi = this.stationName;
             }
         });
-
-        console.log(lähinAsemaNimi)
-        console.log(lähinAsemaMatkaKM)
         $('#lähtöAsema').val(lähinAsemaNimi);
     }
 
@@ -193,6 +185,15 @@ $(document).ready(function () {
             }
         });
     }
+
+    $('#vaihtoNappi').click(function (e) {
+        e.preventDefault();
+        let läh = $('#lähtöAsema').val();
+        let saap = $('#saapumisAsema').val();
+        $('#lähtöAsema').val(saap);
+        $('#saapumisAsema').val(läh);
+        
+    })
 
     //Värittää tyjäksi jätetyn kentän
     $('input').blur(function (e) {

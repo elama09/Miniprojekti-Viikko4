@@ -202,9 +202,7 @@ $(document).ready(function () {
 
     //Hae lähin asema funktio
     $('#haeLähin').click(function (e) {
-        console.log('haetaan lähin asema')
         etsiLähinAsema();
-        console.log(lähinAsemaNimi);
     })
 
     //löytää oikeat junat
@@ -236,13 +234,10 @@ $(document).ready(function () {
                 etsiAsemaLähtö();
                 saapumisAsema = document.getElementById('saapumisAsema').value;
                 etsiAsemaSaapumis();
-                console.log(lähtöAsemaLyhenne);
-                console.log(saapumisAsemaLyhenne);
                 var pvm = new Date(document.getElementById("päivämäärä").value);
                 pvm.setHours(pvm.getHours());
                 var isoPvm = pvm.toISOString();
                 oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=4";
-                console.log(oikeaURL);
                 $('#toinenKolumni').removeClass('animated zoomIn');
                 haeData();
                 break;
@@ -256,11 +251,6 @@ $(document).ready(function () {
             let juna = tiedot[i].trainType + tiedot[i].trainNumber;
             let lähtö = new Date(tiedot[i].timeTableRows[lähtöIndeksi()].scheduledTime);
             let perillä = new Date(tiedot[i].timeTableRows[saapumisIndeksi()].scheduledTime);
-            console.log('testi! katso aika!')
-            console.log(lähtö.getDate())
-            console.log((lähtö.getMonth() + 1))
-            console.log(perillä.getDate())
-            console.log((perillä.getMonth() + 1))
 
             function lähtöIndeksi() {
                 for (let b = 0; b < tiedot[i].timeTableRows.length; b++) {
@@ -316,7 +306,6 @@ $(document).ready(function () {
 
         //Jos ei yhtäkään juna osumaa
         if ($('#lista li').length == null || $('#lista li').length == 0) {
-            console.log("JEEEEE!")
             $('#lista').html('<p class="animated flash">Hakuehdoillasi ei löytynyt yhteyksiä!</p>');
         }
 

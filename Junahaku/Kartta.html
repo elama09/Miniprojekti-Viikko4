@@ -5,7 +5,8 @@
     <h3 class="kartanOtsikko">Saapumisasema</h3>
     <div id="kartta2"></div>
 
-
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCePNpIIbvnybJtiYOe6h0v8oMv4gY4SaU">
+    </script>
     <script>
         // Kordinaatit muuttujissa
         var la_alku;
@@ -17,23 +18,26 @@
 
         // Luodaan kaksi Mappia
         function initMap() {
-            var map1 = new google.maps.Map(document.getElementById('kartta'), {
-                center: { lat: la_alku, lng: lo_alku },
-                zoom: 13
-            });
-            var merkki1 = new google.maps.Marker({
-                position: { lat: la_alku, lng: lo_alku },
-                map: map1
-            });
+            //Hidastaa 0,5sek jotta maps kerkeää aina latautua, eikä tule erroria ensimmäisellä latauskerralla
+            setTimeout(function () {
+                var map1 = new google.maps.Map(document.getElementById('kartta'), {
+                    center: { lat: la_alku, lng: lo_alku },
+                    zoom: 13
+                });
+                var merkki1 = new google.maps.Marker({
+                    position: { lat: la_alku, lng: lo_alku },
+                    map: map1
+                });
 
-            var map2 = new google.maps.Map(document.getElementById('kartta2'), {
-                center: { lat: la_loppu, lng: lo_loppu },
-                zoom: 13
-            });
-            var merkki2 = new google.maps.Marker({
-                position: { lat: la_loppu, lng: lo_loppu },
-                map: map2
-            });
+                var map2 = new google.maps.Map(document.getElementById('kartta2'), {
+                    center: { lat: la_loppu, lng: lo_loppu },
+                    zoom: 13
+                });
+                var merkki2 = new google.maps.Marker({
+                    position: { lat: la_loppu, lng: lo_loppu },
+                    map: map2
+                });
+            }, 500);
         }
 
         //Sijaintipalvelu - haku
@@ -58,5 +62,4 @@
         $('#kartta2').addClass('animated zoomIn');
 
     </script>
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCePNpIIbvnybJtiYOe6h0v8oMv4gY4SaU">
-    </script>
+    

@@ -32,7 +32,7 @@
                                     <input type="text" required name="lähtö" class="form-control form-control-lg" id="lähtöAsema" placeholder="Syötä lähtöasema" style="width: 100%;">
                                     <ul id="myUL"></ul>
                                 </div>
-                                
+
                                 <div>
                                     <button type="button" id="haeLähin" class="btn btn-outline-light btn-lg">Hae lähin asema</button>
                                 </div>
@@ -40,11 +40,17 @@
                         </div>
                         <div class="form-group">
                             <label for="saapumisAsema">Saapumisasema</label>
-                            <button id="vaihtoNappi" class="fas fa-exchange-alt fa-2x" ></button>
+                            <button id="vaihtoNappi" class="fas fa-exchange-alt fa-2x"></button>
                             <input type="text" required name="saapuminen" class="form-control form-control-lg" id="saapumisAsema" placeholder="Syötä saapumisasema" style="width: 50%;">
                             <ul id="myUL2"></ul>
                         </div>
-                        <div><label for="päivämäärä">Päivämäärä</label></div>
+                        <div>
+                            <label for="päivämäärä">Päivämäärä</label>
+                            <div class="LähtöSaapuminen">
+                                <label><input name="valikko" class="lähtöVaiSaapuminen" id="radioLähtö" type="radio" value="Lähtöaika" checked>Lähtöaika</label>
+                                <label><input name="valikko" class="lähtöVaiSaapuminen" id="radioSaapuminen" type="radio" value="Saapumisaika">Saapumisaika</label>
+                            </div>
+                        </div>
                         <input type="datetime-local" required name="aika" class="form-control form-control-lg" id="päivämäärä" placeholder="today" style="width: 50%">
 
                         <br />

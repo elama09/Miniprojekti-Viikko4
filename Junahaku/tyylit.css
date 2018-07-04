@@ -111,10 +111,10 @@ li:before {
     border-radius: 30px;
     font-family: 'Nunito', sans-serif;
     margin: 0px;
-    padding-left: 50px;
+    padding-left: 10px;
     padding-bottom: 40px;
     padding-top: 10px;
-    padding-right: 50px;
+    padding-right: 10px;
 }
 
 #lista p {

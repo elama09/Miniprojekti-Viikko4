@@ -9,6 +9,8 @@ var saapumisAsemaLyhenne;
 var asematArray;
 var päivämäärä = document.getElementById("päivämäärä").value;
 var asemienNimet = [];
+var optiot = { hour: '2-digit', minute: '2-digit', hour12: false };
+var pvm;
 
 $(document).ready(function () {
 
@@ -31,7 +33,6 @@ $(document).ready(function () {
                 asemienNimet.push(väliaikainen);
                 $('<li><a>' + väliaikainen + '</a></li >').click(jokainenAsema).appendTo('#myUL');
                 $('<li><a>' + väliaikainen + '</a></li >').click(jokainenAsemaSaapuminen).appendTo('#myUL2');
-
             })
         }
     });
@@ -186,13 +187,14 @@ $(document).ready(function () {
         });
     }
 
+    //funktio vaihtaa asemat päittäin
     $('#vaihtoNappi').click(function (e) {
         e.preventDefault();
         let läh = $('#lähtöAsema').val();
         let saap = $('#saapumisAsema').val();
         $('#lähtöAsema').val(saap);
         $('#saapumisAsema').val(läh);
-        
+
     })
 
     //Värittää tyjäksi jätetyn kentän
@@ -202,12 +204,10 @@ $(document).ready(function () {
 
     //Hae lähin asema funktio
     $('#haeLähin').click(function (e) {
-        console.log('haetaan lähin asema')
         etsiLähinAsema();
-        console.log(lähinAsemaNimi);
     })
 
-    //löytää oikeat junat
+    //löytää oikeat junat - Eniten tapahtumia tämän jälkeen
     $('#haeNappi').click(function () {
 
         //Validointi logiikka
@@ -225,104 +225,160 @@ $(document).ready(function () {
                 saapumisAsemaOikein = true;
             }
             if (lähtöAsemaOikein == true && saapumisAsemaOikein == true) {
-                $('#toinenKolumni').addClass('col')
-                $('#kolmasKolumni').addClass('col')
-                $('#tyhjäKolumni').addClass('col-1')
-                $('#divContainerPoisto').removeClass('container')
-                $('#kolmasKolumni').load("Kartta.html")
-                $('#toinenKolumni').load("Junatulokset.html")
 
                 lähtöAsema = document.getElementById('lähtöAsema').value;
                 etsiAsemaLähtö();
                 saapumisAsema = document.getElementById('saapumisAsema').value;
                 etsiAsemaSaapumis();
-                console.log(lähtöAsemaLyhenne);
-                console.log(saapumisAsemaLyhenne);
-                var pvm = new Date(document.getElementById("päivämäärä").value);
+                pvm = new Date(document.getElementById("päivämäärä").value);
+
+                $('#toinenKolumni').addClass('col')
+                $('#kolmasKolumni').addClass('col')
+                $('#tyhjäKolumni').addClass('col-1')
+                $('#divContainerPoisto').removeClass('container')
+                
                 pvm.setHours(pvm.getHours());
                 var isoPvm = pvm.toISOString();
                 oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?startDate=" + isoPvm + "&limit=4";
-                console.log(oikeaURL);
+
+                //Jos haetaan saapumisajan mukaan!
+                let pelkkäPäivä = pvm.toJSON().substr(0, 10)
+                if ($('#radioSaapuminen').prop('checked')) {
+                    oikeaURL = alkuURL + lähtöAsemaLyhenne + "/" + saapumisAsemaLyhenne + "?departure_date=" + pelkkäPäivä;
+                }
+
+                $('#kolmasKolumni').load("Kartta.html")
+                $('#toinenKolumni').load("Junatulokset.html")
                 $('#toinenKolumni').removeClass('animated zoomIn');
                 haeData();
+                
                 break;
             }
         }
     });
 
-    // Hakee junien tiedot ja tekee jotain!
+    //Muutetaan integer oikeaksi viikonpäiväksi
+    function muutaViikonPäiväksi(päivä) {
+        var viikonPäivät = ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'];
+        return viikonPäivät[päivä]
+    }
+
+    // Hakee junien tiedot ja tulostaa käyttäjälle
     function TulostaTiedot() {
-        for (let i = 0; i < tiedot.length; i++) {
-            let juna = tiedot[i].trainType + tiedot[i].trainNumber;
-            let lähtö = new Date(tiedot[i].timeTableRows[lähtöIndeksi()].scheduledTime);
-            let perillä = new Date(tiedot[i].timeTableRows[saapumisIndeksi()].scheduledTime);
-            console.log('testi! katso aika!')
-            console.log(lähtö.getDate())
-            console.log((lähtö.getMonth() + 1))
-            console.log(perillä.getDate())
-            console.log((perillä.getMonth() + 1))
 
-            function lähtöIndeksi() {
-                for (let b = 0; b < tiedot[i].timeTableRows.length; b++) {
-                    if ((tiedot[i].timeTableRows[b].stationShortCode) == lähtöAsemaLyhenne && (tiedot[i].timeTableRows[b].type == 'DEPARTURE') && (tiedot[i].timeTableRows[b].trainStopping == true)) {
-                        return b;
+        //Jos saapumisajan mukaan
+        if ($('#radioSaapuminen').prop('checked')) {
+            for (let i = tiedot.length - 1; i >= 0; i--) {
+                let juna = tiedot[i].trainType + tiedot[i].trainNumber;
+                let lähtö = new Date(tiedot[i].timeTableRows[lähtöIndeksi()].scheduledTime);
+                let perillä = new Date(tiedot[i].timeTableRows[saapumisIndeksi()].scheduledTime);
+
+                //Jos saapumisaika on myöhempi tai jos junia tulostettu 4kpl
+                if (perillä >= pvm) {
+                    continue;
+                } else if ($('#lista li').length == 4) {
+                    break;
+                }
+
+                //Keston laskeminen - Sekunteja ei oteta huomioon, todellisuudessa joskus 30s esim
+                let lähtöiso = lähtö.toISOString().slice(0, 19) + 'Z';
+                let perilläiso = perillä.toISOString().slice(0, 19) + 'Z';
+                lähtöiso = new Date(lähtöiso)
+                perilläiso = new Date(perilläiso)
+                let kesto = (perilläiso - lähtöiso) / 1000 / 60;
+                let tunnit = Math.floor(kesto / 60)
+                let minuutit = Math.floor(kesto % 60);
+                if (minuutit < 10) {
+                    kesto = tunnit + ':0' + minuutit;
+                } else {
+                    kesto = tunnit + ':' + minuutit;
+                }
+
+                function lähtöIndeksi() {
+                    for (let b = 0; b < tiedot[i].timeTableRows.length; b++) {
+                        if ((tiedot[i].timeTableRows[b].stationShortCode) == lähtöAsemaLyhenne && (tiedot[i].timeTableRows[b].type == 'DEPARTURE') && (tiedot[i].timeTableRows[b].trainStopping == true)) {
+                            return b;
+                        }
                     }
                 }
-            }
 
-            function saapumisIndeksi() {
-                for (let a = 0; a < tiedot[i].timeTableRows.length; a++) {
-                    if ((tiedot[i].timeTableRows[a].stationShortCode) == saapumisAsemaLyhenne && (tiedot[i].timeTableRows[a].type == 'ARRIVAL') && (tiedot[i].timeTableRows[a].trainStopping == true)) {
-                        return a;
+                function saapumisIndeksi() {
+                    for (let a = 0; a < tiedot[i].timeTableRows.length; a++) {
+                        if ((tiedot[i].timeTableRows[a].stationShortCode) == saapumisAsemaLyhenne && (tiedot[i].timeTableRows[a].type == 'ARRIVAL') && (tiedot[i].timeTableRows[a].trainStopping == true)) {
+                            return a;
+                        }
                     }
                 }
+
+                //Junien tulostus näytölle
+                document.getElementById("lista").innerHTML += '<li><b>Juna '
+                    + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
+                    + ' ' + '(' + muutaViikonPäiväksi(lähtö.getDay()) + ')' + ' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
+                    + ' ' + '(' + muutaViikonPäiväksi(perillä.getDay()) + ')' + ' ' + saapumisAsema + ' <br />' + 'Kesto: '
+                    + kesto + '</li > ';
             }
 
-            function muutaViikonPäiväksi(päivä) {
-                var viikonPäivät = ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'];
-                return viikonPäivät[päivä]
+            $('#toinenKolumni').addClass('animated zoomIn');
+
+            //Jos ei yhtäkään juna osumaa
+            if ($('#lista li').length == null || $('#lista li').length == 0) {
+                $('#lista').html('<p class="animated flash">Hakuehdoillasi ei löytynyt yhteyksiä!</p>');
+            }
+            
+        //Jos lähtöajan mukaan
+        } else {
+            for (let i = 0; i < tiedot.length; i++) {
+                let juna = tiedot[i].trainType + tiedot[i].trainNumber;
+                let lähtö = new Date(tiedot[i].timeTableRows[lähtöIndeksi()].scheduledTime);
+                let perillä = new Date(tiedot[i].timeTableRows[saapumisIndeksi()].scheduledTime);
+
+                //Keston laskeminen - Sekunteja ei oteta huomioon, todellisuudessa joskus 30s esim
+                let lähtöiso = lähtö.toISOString().slice(0, 19) + 'Z';
+                let perilläiso = perillä.toISOString().slice(0, 19) + 'Z';
+                lähtöiso = new Date(lähtöiso)
+                perilläiso = new Date(perilläiso)
+                let kesto = (perilläiso - lähtöiso) / 1000 / 60;
+                let tunnit = Math.floor(kesto / 60)
+                let minuutit = Math.floor(kesto % 60);
+                if (minuutit < 10) {
+                    kesto = tunnit + ':0' + minuutit;
+                } else {
+                    kesto = tunnit + ':' + minuutit;
+                }
+
+                function lähtöIndeksi() {
+                    for (let b = 0; b < tiedot[i].timeTableRows.length; b++) {
+                        if ((tiedot[i].timeTableRows[b].stationShortCode) == lähtöAsemaLyhenne && (tiedot[i].timeTableRows[b].type == 'DEPARTURE') && (tiedot[i].timeTableRows[b].trainStopping == true)) {
+                            return b;
+                        }
+                    }
+                }
+
+                function saapumisIndeksi() {
+                    for (let a = 0; a < tiedot[i].timeTableRows.length; a++) {
+                        if ((tiedot[i].timeTableRows[a].stationShortCode) == saapumisAsemaLyhenne && (tiedot[i].timeTableRows[a].type == 'ARRIVAL') && (tiedot[i].timeTableRows[a].trainStopping == true)) {
+                            return a;
+                        }
+                    }
+                }
+
+                //Junien tulostus näytölle
+                document.getElementById("lista").innerHTML += '<li><b>Juna '
+                    + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
+                    + ' ' + '(' + muutaViikonPäiväksi(lähtö.getDay()) + ')' + ' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
+                    + ' ' + '(' + muutaViikonPäiväksi(perillä.getDay()) + ')' + ' ' + saapumisAsema + ' <br />' + 'Kesto: '
+                    + kesto + '</li > ';
             }
 
-            var optiot = { hour: '2-digit', minute: '2-digit', hour12: false };
-            var decimalTimeString = (perillä.toLocaleTimeString("fi", optiot) - lähtö.toLocaleTimeString("fi", optiot));
-            if (decimalTimeString < 0) {
-                decimalTimeString = (decimalTimeString * -1)
-            }
+            $('#toinenKolumni').addClass('animated zoomIn');
 
-            var decimalTime = parseFloat(decimalTimeString);
-            decimalTime = decimalTime * 60 * 60;
-            var hours = Math.round((decimalTime / (60 * 60)));
-            decimalTime = decimalTime - (hours * 60 * 60);
-            var minutes = Math.round((decimalTime / 60));
-            decimalTime = decimalTime - (minutes * 60);
-            var seconds = Math.round(decimalTime);
-            if (minutes < 10) {
-                minutes = "0" + minutes;
+            //Jos ei yhtäkään juna osumaa
+            if ($('#lista li').length == null || $('#lista li').length == 0) {
+                $('#lista').html('<p class="animated flash">Hakuehdoillasi ei löytynyt yhteyksiä!</p>');
             }
-            if (seconds < 10) {
-                seconds = "0" + seconds;
-            }
-
-            var kesto = ("" + hours + ":" + minutes + ":" + seconds);
-
-            //Junien tulostus näytölle
-            document.getElementById("lista").innerHTML += '<li><b>Juna '
-                + juna + '</b > <br />Lähtee: ‎' + lähtö.toLocaleTimeString("fi", optiot)
-                + ' ' + '(' + muutaViikonPäiväksi(lähtö.getDay()) + ')' +' ' + lähtöAsema + '<br />Saapuu: ' + perillä.toLocaleTimeString("fi", optiot)
-                + ' ' + '('+ muutaViikonPäiväksi(perillä.getDay()) +')' + ' ' + saapumisAsema + ' <br /></li > ';
+            
         }
-
-        $('#toinenKolumni').addClass('animated zoomIn');
-
-        //Jos ei yhtäkään juna osumaa
-        if ($('#lista li').length == null || $('#lista li').length == 0) {
-            console.log("JEEEEE!")
-            $('#lista').html('<p class="animated flash">Hakuehdoillasi ei löytynyt yhteyksiä!</p>');
-        }
-
     }
 
     $('#aloitusHaku').addClass('animated zoomIn');
-    
-
 })
